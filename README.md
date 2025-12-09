@@ -1,96 +1,87 @@
-IoT Open – Home Assistant Integration
+📘 IoT Open – Home Assistant Integration
 
-This repository provides a custom Home Assistant integration for IoT Open (Lynx).
+A custom Home Assistant integration for IoT Open (Lynx) that enables full interaction between your Lynx installation and Home Assistant using the REST API.
 
-The integration enables Home Assistant to communicate with an IoT Open installation via the REST API and provides full management control of DeviceX and FunctionX, following standard Home Assistant design patterns such as config_flow, DataUpdateCoordinator, translations, and service definitions.
+This integration allows you to:
 
-Overview
+🔗 Connect your IoT Open installation to Home Assistant
 
-This integration makes it possible to:
+📡 Discover FunctionX objects as Home Assistant entities
 
-Connect a Lynx installation to Home Assistant through the REST API.
+📊 Retrieve live data via the Status API
 
-Automatically discover FunctionX objects and expose them as Home Assistant entities.
+🛠 Manage DeviceX and FunctionX directly from Home Assistant
 
-Retrieve live values using the Status API (topic_read).
+🧩 Assign metadata, units, names, device IDs, icons, and more
 
-Manage DeviceX and FunctionX directly from Home Assistant:
+The integration follows official Home Assistant development patterns, including config_flow, DataUpdateCoordinator, translations, and service definitions.
 
-Create, delete, and modify devices and functions.
+🚀 Features
+🧱 Data Model
 
-Assign functions to devices using meta.device_id.
+One HA config entry = one IoT Open installation
 
-Set metadata (names, units, icons, public visibility, and custom fields).
+DeviceX → Physical devices in IoT Open (e.g., KNX gateways, IoT controllers, sensor hubs)
 
-Data Model
+FunctionX → Logical datapoints (temperature, humidity, switch, boolean, etc.)
 
-Installation
-One Home Assistant config entry corresponds to one IoT Open installation.
+Status API → Retrieves live values based on topic_read
 
-DeviceX
-Represents a physical device in IoT Open (e.g., controllers, KNX gateways, sensor hubs).
+📥 What the Integration Does
 
-FunctionX
-Represents logical datapoints such as temperature, humidity, boolean states, switches, or other measured values.
+Uses IoT Open API v2 over HTTPS with X-API-Key authentication
 
-Status API
-Provides the latest status values for all functions that define a topic_read.
+Periodically:
 
-How the Integration Works
+Lists FunctionX for the installation
 
-The integration communicates with IoT Open API v2 over HTTPS using an X-API-Key.
-It periodically performs the following operations:
+Reads meta.topic_read for each function
 
-Retrieves all FunctionX objects for the installation.
+Fetches latest status samples
 
-Reads meta.topic_read for each function.
+Creates/updates Home Assistant entities
 
-Fetches the latest status samples from the Status API.
+Automatically groups entities:
 
-Creates or updates Home Assistant entities based on function types.
+If meta.device_id is set → entities grouped under the correct DeviceX
 
-Organizes entities under devices:
+Otherwise → grouped under the Installation device
 
-If meta.device_id is set → entities are grouped under the corresponding DeviceX.
+🛠 Manage IoT Open from Home Assistant
 
-Otherwise → entities are grouped under the installation-level device.
+The integration exposes HA services that let you perform platform maintenance directly from Home Assistant:
 
-Platform Management from Home Assistant
+➕ Create DeviceX
 
-The integration exposes multiple Home Assistant services to manage IoT Open resources:
+➖ Delete DeviceX
 
-Create or delete DeviceX.
+➕ Create FunctionX
 
-Create or delete FunctionX.
+➖ Delete FunctionX
 
-Assign a FunctionX to a DeviceX (meta.device_id).
+🔗 Assign FunctionX → DeviceX via meta.device_id
 
-Modify metadata for DeviceX or FunctionX (name, unit, icon, visibility, and custom metadata fields).
+🏷 Set metadata on both DeviceX and FunctionX (name, unit, icon, public, etc.)
 
-These capabilities can be automated using Home Assistant automations or scripts.
+This makes it possible to automate IoT Open management using HA automations and scripts.
 
-Requirements
+📋 Requirements
 
-Home Assistant 2023.12 or newer.
+Home Assistant 2023.12+
 
-Python environment provided by Home Assistant (no manual dependencies).
+Python environment provided by Home Assistant
 
-An IoT Open / Lynx account with:
+IoT Open / Lynx account with:
 
-Access to an installation.
+Access to an installation
 
-A valid API key (X-API-Key) with read/write permissions for:
+Valid API key (X-API-Key) with read/write permissions
+(DeviceX, FunctionX, Status API)
 
-DeviceX
+📦 Installation
+1️⃣ File Layout
 
-FunctionX
-
-Status API
-
-Installation
-1. File Layout
-
-Place the integration in your Home Assistant configuration directory:
+Place the integration into your Home Assistant configuration folder:
 
 <config>/
   custom_components/
@@ -110,26 +101,33 @@ Place the integration in your Home Assistant configuration directory:
         fr.json
         ar.json
 
-2. Restart Home Assistant
+2️⃣ Restart Home Assistant
 
-Restart Home Assistant to ensure the integration is loaded.
+After copying the folder, restart Home Assistant.
 
-3. Add the Integration
+3️⃣ Add the Integration
 
-Navigate to:
+In Home Assistant:
 
 Settings → Devices & Services → Add Integration → IoT Open
 
 
-Enter the Base URL, Installation ID, and API Key.
-Entities will be discovered and created automatically.
+Enter:
 
-Contributing
+Base URL
 
-Contributions are welcome.
-You may submit feature requests, issues, or pull requests to improve and expand the integration.
+Installation ID
 
-License
+API Key
 
-This project is licensed under the MIT License.
-For details, see the LICENSE file.
+Home Assistant will now automatically discover all FunctionX items and create entities.
+
+🤝 Contributing
+
+Contributions, improvements, and suggestions are welcome!
+Feel free to open issues or submit pull requests.
+
+📄 License
+
+This project is available under the MIT License.
+See the LICENSE file for details.
