@@ -1,70 +1,88 @@
-# IoT Open – Home Assistant Integration
+📘 IoT Open – Home Assistant Integration
 
-Custom Home Assistant integration for **IoT Open (Lynx)** that lets you:
+A custom Home Assistant integration for IoT Open (Lynx) that enables full interaction between your Lynx installation and Home Assistant using the REST API.
 
-- Connect a Lynx **installation** to Home Assistant over the REST API.
-- Discover **FunctionX** as sensors (with live values via the Status API).
-- Manage **DeviceX** and **FunctionX** from Home Assistant:
-  - Create / delete devices.
-  - Create / delete functions.
-  - Assign functions to devices via `meta.device_id`.
-  - Set arbitrary metadata on devices and functions (name, unit, icon, public, etc.).
+This integration allows you to:
 
-The integration is designed as a conventional HA custom component and follows the official integration patterns (config flow, `DataUpdateCoordinator`, `services.yaml`, translations, etc.).   
+🔗 Connect your IoT Open installation to Home Assistant
 
----
+📡 Discover FunctionX objects as Home Assistant entities
 
-## Features
+📊 Retrieve live data via the Status API
 
-### Data model
+🛠 Manage DeviceX and FunctionX directly from Home Assistant
 
-- **Installation**: One HA config entry = one IoT Open installation.
-- **DeviceX**: Physical devices in IoT Open (KNX gateways, sensor hubs, controllers…).   
-- **FunctionX**: Logical datapoints / functions (temperature, humidity, boolean, etc.).   
-- **Status API**: Used to pull the latest values per `topic_read` and expose them as HA entities.   
+🧩 Assign metadata, units, names, device IDs, icons, and more
 
-### What the integration does
+The integration follows official Home Assistant development patterns, including config_flow, DataUpdateCoordinator, translations, and service definitions.
 
-- Uses **IoT Open API v2** over HTTPS with `X-API-Key` authentication.
-- Periodically:
-  - Lists `FunctionX` for the installation.
-  - Collects `meta.topic_read` for each function.
-  - Fetches latest **status samples** for these topics.
-  - Exposes each function as a **sensor entity** in Home Assistant.
-- Groups entities:
-  - If `meta.device_id` is set → entities are grouped under an IoT Open **DeviceX**.
-  - Otherwise → grouped under the **Installation** device.
+🚀 Features
+🧱 Data Model
 
-### Management from Home Assistant
+One HA config entry = one IoT Open installation
 
-Via HA **services** you can:
+DeviceX → Physical devices in IoT Open (e.g., KNX gateways, IoT controllers, sensor hubs)
 
-- Create / delete **DeviceX**.
-- Create / delete **FunctionX**.
-- Assign `FunctionX` → `DeviceX` (set `meta.device_id`).
-- Set arbitrary metadata keys for **DeviceX** and **FunctionX** via the **meta API**.   
+FunctionX → Logical datapoints (temperature, humidity, switch, boolean, etc.)
 
-This allows you to do a lot of “platform maintenance” from HA automations or scripts.
+Status API → Retrieves live values based on topic_read
 
----
+📥 What the Integration Does
 
-## Requirements
+Uses IoT Open API v2 over HTTPS with X-API-Key authentication
 
-- Home Assistant **2023.12+** (tested against dev patterns from the current docs).   
-- Python environment provided by Home Assistant (no extra manual deps required).
-- An IoT Open / Lynx account with:
-  - Access to an **installation**.
-  - A valid **API key** (`X-API-Key`) with rights to read/write DeviceX/FunctionX and Status.   
+Periodically:
 
----
+Lists FunctionX for the installation
 
-## Installation
+Reads meta.topic_read for each function
 
-### 1. File layout
+Fetches latest status samples
 
-Place the integration in your HA config directory as:
+Creates/updates Home Assistant entities
 
-```text
+Automatically groups entities:
+
+If meta.device_id is set → entities grouped under the correct DeviceX
+
+Otherwise → grouped under the Installation device
+
+🛠 Manage IoT Open from Home Assistant
+
+The integration exposes HA services that let you perform platform maintenance directly from Home Assistant:
+
+➕ Create DeviceX
+
+➖ Delete DeviceX
+
+➕ Create FunctionX
+
+➖ Delete FunctionX
+
+🔗 Assign FunctionX → DeviceX via meta.device_id
+
+🏷 Set metadata on both DeviceX and FunctionX (name, unit, icon, public, etc.)
+
+This makes it possible to automate IoT Open management using HA automations and scripts.
+
+📋 Requirements
+
+Home Assistant 2023.12+
+
+Python environment provided by Home Assistant
+
+IoT Open / Lynx account with:
+
+Access to an installation
+
+Valid API key (X-API-Key) with read/write permissions
+(DeviceX, FunctionX, Status API)
+
+📦 Installation
+1️⃣ File Layout
+
+Place the integration into your Home Assistant configuration folder:
+
 <config>/
   custom_components/
     iotopen/
@@ -82,3 +100,34 @@ Place the integration in your HA config directory as:
         de.json
         fr.json
         ar.json
+
+2️⃣ Restart Home Assistant
+
+After copying the folder, restart Home Assistant.
+
+3️⃣ Add the Integration
+
+In Home Assistant:
+
+Settings → Devices & Services → Add Integration → IoT Open
+
+
+Enter:
+
+Base URL
+
+Installation ID
+
+API Key
+
+Home Assistant will now automatically discover all FunctionX items and create entities.
+
+🤝 Contributing
+
+Contributions, improvements, and suggestions are welcome!
+Feel free to open issues or submit pull requests.
+
+📄 License
+
+This project is available under the MIT License.
+See the LICENSE file for details.
