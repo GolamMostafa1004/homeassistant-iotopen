@@ -1,87 +1,87 @@
-📘 IoT Open – Home Assistant Integration
+IoT Open – Home Assistant Integration
 
-A custom Home Assistant integration for IoT Open (Lynx) that enables full interaction between your Lynx installation and Home Assistant using the REST API.
+This repository contains a custom Home Assistant integration for IoT Open (Lynx).
+It enables Home Assistant to interact with an IoT Open installation through the REST API and provides tools for managing DeviceX and FunctionX directly from Home Assistant.
+
+The integration follows standard Home Assistant development patterns, including config_flow, DataUpdateCoordinator, translations, and service implementations.
+
+Overview
 
 This integration allows you to:
 
-🔗 Connect your IoT Open installation to Home Assistant
+Connect a Lynx installation to Home Assistant via the REST API.
 
-📡 Discover FunctionX objects as Home Assistant entities
+Automatically discover FunctionX objects and represent them as Home Assistant entities.
 
-📊 Retrieve live data via the Status API
+Retrieve live values using the Status API (topic_read).
 
-🛠 Manage DeviceX and FunctionX directly from Home Assistant
+Manage DeviceX and FunctionX from Home Assistant.
 
-🧩 Assign metadata, units, names, device IDs, icons, and more
+Create, delete, and modify devices and functions.
 
-The integration follows official Home Assistant development patterns, including config_flow, DataUpdateCoordinator, translations, and service definitions.
+Assign functions to devices using meta.device_id.
 
-🚀 Features
-🧱 Data Model
+Set metadata such as names, units, icons, and public visibility.
 
-One HA config entry = one IoT Open installation
+Data Model
 
-DeviceX → Physical devices in IoT Open (e.g., KNX gateways, IoT controllers, sensor hubs)
+Installation: One Home Assistant config entry corresponds to one IoT Open installation.
 
-FunctionX → Logical datapoints (temperature, humidity, switch, boolean, etc.)
+DeviceX: Represents physical devices in IoT Open (for example, controllers, KNX gateways, sensor hubs).
 
-Status API → Retrieves live values based on topic_read
+FunctionX: Represents logical datapoints (such as temperature, humidity, switches, booleans, and other measured or state values).
 
-📥 What the Integration Does
+Status API: Used to retrieve up-to-date readings for all functions with topic_read defined.
 
-Uses IoT Open API v2 over HTTPS with X-API-Key authentication
+How the Integration Works
 
-Periodically:
+The integration uses IoT Open API v2 over HTTPS with an X-API-Key for authentication.
+It periodically performs the following actions:
 
-Lists FunctionX for the installation
+Retrieves all FunctionX objects for the configured installation.
 
-Reads meta.topic_read for each function
+Collects meta.topic_read values for each function.
 
-Fetches latest status samples
+Fetches the latest available status samples.
 
-Creates/updates Home Assistant entities
+Creates or updates Home Assistant entities based on the function type.
 
-Automatically groups entities:
+Organizes entities under devices:
 
-If meta.device_id is set → entities grouped under the correct DeviceX
+If meta.device_id is set, entities are grouped under the corresponding DeviceX.
 
-Otherwise → grouped under the Installation device
+Otherwise, they are grouped under the installation-level device.
 
-🛠 Manage IoT Open from Home Assistant
+Platform Management from Home Assistant
 
-The integration exposes HA services that let you perform platform maintenance directly from Home Assistant:
+The integration exposes several Home Assistant services that allow management of IoT Open resources:
 
-➕ Create DeviceX
+Create or delete DeviceX.
 
-➖ Delete DeviceX
+Create or delete FunctionX.
 
-➕ Create FunctionX
+Assign FunctionX to DeviceX via meta.device_id.
 
-➖ Delete FunctionX
+Modify metadata for both DeviceX and FunctionX (e.g., name, unit, icon, public visibility, and custom metadata fields).
 
-🔗 Assign FunctionX → DeviceX via meta.device_id
+These operations can be automated through scripts or automations within Home Assistant.
 
-🏷 Set metadata on both DeviceX and FunctionX (name, unit, icon, public, etc.)
+Requirements
 
-This makes it possible to automate IoT Open management using HA automations and scripts.
+Home Assistant version 2023.12 or newer.
 
-📋 Requirements
+Python environment as provided by Home Assistant (no additional installations required).
 
-Home Assistant 2023.12+
+An IoT Open/Lynx account with:
 
-Python environment provided by Home Assistant
+Access to a valid installation.
 
-IoT Open / Lynx account with:
+An API key (X-API-Key) with read and write access to DeviceX, FunctionX, and the Status API.
 
-Access to an installation
+Installation
+File Layout
 
-Valid API key (X-API-Key) with read/write permissions
-(DeviceX, FunctionX, Status API)
-
-📦 Installation
-1️⃣ File Layout
-
-Place the integration into your Home Assistant configuration folder:
+Place the integration under your Home Assistant configuration directory:
 
 <config>/
   custom_components/
@@ -101,33 +101,27 @@ Place the integration into your Home Assistant configuration folder:
         fr.json
         ar.json
 
-2️⃣ Restart Home Assistant
+Restart Home Assistant
 
-After copying the folder, restart Home Assistant.
+Restart Home Assistant to load the integration.
 
-3️⃣ Add the Integration
+Add the Integration
 
-In Home Assistant:
+Navigate to:
 
 Settings → Devices & Services → Add Integration → IoT Open
 
 
-Enter:
+Enter the Base URL, Installation ID, and API Key for your IoT Open installation.
 
-Base URL
+Entities will be discovered and created automatically.
 
-Installation ID
+Contributing
 
-API Key
+Contributions are welcome.
+Please feel free to submit issues, feature requests, or pull requests to improve this integration.
 
-Home Assistant will now automatically discover all FunctionX items and create entities.
+License
 
-🤝 Contributing
-
-Contributions, improvements, and suggestions are welcome!
-Feel free to open issues or submit pull requests.
-
-📄 License
-
-This project is available under the MIT License.
+This project is licensed under the MIT License.
 See the LICENSE file for details.
