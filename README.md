@@ -79,6 +79,7 @@ Valid API key (X-API-Key) with read/write permissions
 (DeviceX, FunctionX, Status API)
 
 📦 Installation
+
 1️⃣ File Layout
 
 Place the integration into your Home Assistant configuration folder:
